@@ -1,0 +1,41 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="360dp"
+    android:height="150dp"
+    android:viewportWidth="360"
+    android:viewportHeight="150">
+    
+    <!-- Background -->
+    <path
+        android:pathData="M0,0h360v150h-360z"
+        android:fillColor="#F0F8FF"/>
+
+    <!-- Yellow Circle/Arc -->
+    <path
+        android:pathData="M120,150 A70,70 0 0,0 120,10 L120,150 z"
+        android:fillColor="#FFC107"/>
+    <path
+        android:pathData="M120,150 A65,65 0 0,0 120,15 L120,150 z"
+        android:fillColor="#FF9800"/>
+        
+    <!-- Image Placeholder (Person/Nurse) - Simplified Vector -->
+    <path
+        android:fillColor="#EEEEEE"
+        android:pathData="M80,150 L160,150 L160,60 L80,60 z"/>
+        
+    <!-- Text: Woodlands Hospital -->
+    <path
+        android:fillColor="#D32F2F"
+        android:pathData="M200,20 h100 v15 h-100 z"/> <!-- Logo placeholder -->
+        
+    <!-- Text: Your home. Our care. -->
+    <path
+        android:fillColor="#D32F2F"
+        android:pathData="M200,50 h120 v20 h-120 z"/>
+        
+    <!-- Phone Number Box -->
+    <path
+        android:fillColor="#D32F2F"
+        android:pathData="M200,120 h100 v20 h-100 z"/>
+        
+</vector>

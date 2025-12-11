@@ -1,0 +1,56 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+    
+    <!-- Background Circle -->
+    <path
+        android:fillColor="#E3F2FD"
+        android:pathData="M100,20 A80,80 0 1,1 100,180 A80,80 0 1,1 100,20 Z" />
+    
+    <!-- X-Ray Film Frame -->
+    <path
+        android:fillColor="#424242"
+        android:pathData="M60,50 L140,50 L140,150 L60,150 Z" />
+    
+    <!-- X-Ray Film Inner -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M65,55 L135,55 L135,145 L65,145 Z"
+        android:fillAlpha="0.9" />
+    
+    <!-- Skeleton/X-Ray Image -->
+    <path
+        android:fillColor="#90CAF9"
+        android:pathData="M90,70 L110,70 L110,130 L90,130 Z"
+        android:fillAlpha="0.6" />
+    
+    <path
+        android:fillColor="#90CAF9"
+        android:pathData="M85,75 L95,75 L95,90 L85,90 Z"
+        android:fillAlpha="0.6" />
+    
+    <path
+        android:fillColor="#90CAF9"
+        android:pathData="M105,75 L115,75 L115,90 L105,90 Z"
+        android:fillAlpha="0.6" />
+    
+    <!-- Doctor/Person Icon -->
+    <path
+        android:fillColor="#1976D2"
+        android:pathData="M160,120 A10,10 0 1,1 160,140 A10,10 0 1,1 160,120 Z" />
+    
+    <path
+        android:fillColor="#1976D2"
+        android:pathData="M150,145 L170,145 L170,165 L150,165 Z" />
+    
+    <!-- Medical Cross -->
+    <path
+        android:fillColor="#FF5252"
+        android:pathData="M95,60 L105,60 L105,50 L95,50 Z" />
+    <path
+        android:fillColor="#FF5252"
+        android:pathData="M90,55 L110,55 L110,60 L90,60 Z" />
+    
+</vector>

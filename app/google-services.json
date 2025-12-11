@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "665218489472",
+    "project_id": "medicam-58d09",
+    "storage_bucket": "medicam-58d09.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:665218489472:android:e961de9ac5ae2c99bf5a65",
+        "android_client_info": {
+          "package_name": "com.example.medicam"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqHjx_ukl6Yl1reTvLjU_nEj6Ih0BrkYY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
