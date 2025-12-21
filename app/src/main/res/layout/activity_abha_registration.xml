@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <!-- Header Section -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:background="@color/medicam_primary"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ABHA Registration"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/headerLayout"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp"
+                android:gravity="center_horizontal">
+
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:src="@drawable/abha_logo"
+                    android:layout_marginTop="12dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ABHA Registration"
+                    android:textColor="@color/medicam_primary"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="12dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Select an Option"
+                    android:textColor="#666666"
+                    android:textSize="12sp"
+                    android:layout_marginTop="18dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCreateAbha"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:text="Create Abha"
+                    android:textAllCaps="false"
+                    android:textColor="#424242"
+                    android:layout_marginTop="20dp"
+                    android:backgroundTint="@color/white"
+                    app:strokeColor="#BDBDBD"
+                    app:strokeWidth="1dp"
+                    app:cornerRadius="12dp"
+                    app:icon="@drawable/ic_id_card"
+                    app:iconTint="#424242" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnLinkAbha"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:text="Link ABHA"
+                    android:textAllCaps="false"
+                    android:textColor="#424242"
+                    android:layout_marginTop="14dp"
+                    android:backgroundTint="@color/white"
+                    app:strokeColor="#BDBDBD"
+                    app:strokeWidth="1dp"
+                    app:cornerRadius="12dp"
+                    app:icon="@drawable/ic_id_card"
+                    app:iconTint="#424242" />
+
+                <TextView
+                    android:id="@+id/tvConnectLater"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Connect Later"
+                    android:textColor="@color/medicam_primary"
+                    android:textSize="12sp"
+                    android:layout_marginTop="12dp" />
+
+            </LinearLayout>
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

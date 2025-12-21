@@ -4,4 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="medicam_primary">#1E8475</color> <!-- Approximate teal from image -->
     <color name="medicam_text_gray">#808080</color>
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="medicam_primary_light">#4DB8A8</color>
 </resources>

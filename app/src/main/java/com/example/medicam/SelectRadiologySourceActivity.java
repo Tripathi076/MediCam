@@ -24,7 +24,7 @@ import java.io.IOException;
 public class SelectRadiologySourceActivity extends AppCompatActivity {
 
     private Uri photoUri;
-    private ActivityResultLauncher<Intent> cameraLauncher;
+    private ActivityResultLauncher<Uri> cameraLauncher;
     private ActivityResultLauncher<String> filePickerLauncher;
 
     @Override

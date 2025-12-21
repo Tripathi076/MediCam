@@ -35,7 +35,7 @@ public class RadiologyActivity extends AppCompatActivity {
         View navHome = findViewById(R.id.navHome);
         View navPathology = findViewById(R.id.navPathology);
         View navABHA = findViewById(R.id.navABHA);
-        View navRadiology = findViewById(R.id.navRadiology);
+        View navBMI = findViewById(R.id.navBMI);
         View navDevices = findViewById(R.id.navDevices);
 
         navHome.setOnClickListener(v -> {
@@ -44,7 +44,7 @@ public class RadiologyActivity extends AppCompatActivity {
         });
 
         navPathology.setOnClickListener(v -> {
-            startActivity(new Intent(RadiologyActivity.this, PathologyActivity.class));
+            startActivity(new Intent(RadiologyActivity.this, ReportsActivity.class));
             finish();
         });
 
@@ -53,8 +53,9 @@ public class RadiologyActivity extends AppCompatActivity {
             finish();
         });
 
-        navRadiology.setOnClickListener(v -> {
-            // Already on Radiology
+        navBMI.setOnClickListener(v -> {
+            startActivity(new Intent(RadiologyActivity.this, BMIActivity.class));
+            finish();
         });
 
         navDevices.setOnClickListener(v -> {

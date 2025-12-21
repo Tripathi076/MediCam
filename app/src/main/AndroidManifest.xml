@@ -72,7 +72,47 @@
             android:exported="false" />
 
         <activity
+            android:name=".AbhaRegistrationActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".AbhaCreateProfileActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".AbhaVerifyAadhaarOtpActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".AbhaLinkMobileActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".AbhaVerifyMobileOtpActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".AbhaChooseUsernameActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".AbhaSuccessActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".BMIActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".BMIGenderActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".BMIInputActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".BMIResultActivity"
             android:exported="false" />
 
         <activity
@@ -129,6 +169,14 @@
 
         <activity
             android:name=".RadiologyDetailActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ABHACardDisplayActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ReportsActivity"
             android:exported="false" />
 
         <!-- FileProvider for sharing files -->

@@ -1,6 +1,7 @@
 package com.example.medicam;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -11,7 +12,15 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.button.MaterialButton;
+
 public class ABHAActivity extends AppCompatActivity {
+
+    private SharedPreferences sharedPreferences;
+    private static final String PREF_NAME = "medicam_pref";
+    private static final String KEY_ABHA_REGISTERED = "abha_registered";
+    private MaterialButton btnStartAbhaFlow;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,8 +35,34 @@ public class ABHAActivity extends AppCompatActivity {
             });
         }
         
+        sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        btnStartAbhaFlow = findViewById(R.id.btnStartAbhaFlow);
+        
         // Set up navigation click listeners
         setupBottomNavigation();
+        checkABHARegistrationStatus();
+    }
+
+    private void checkABHARegistrationStatus() {
+        boolean isAbhaRegistered = sharedPreferences.getBoolean(KEY_ABHA_REGISTERED, false);
+        
+        if (btnStartAbhaFlow != null) {
+            if (isAbhaRegistered) {
+                // User has completed ABHA registration - show card display
+                btnStartAbhaFlow.setText("View My ABHA Card");
+                btnStartAbhaFlow.setOnClickListener(v -> {
+                    Intent intent = new Intent(ABHAActivity.this, ABHACardDisplayActivity.class);
+                    startActivity(intent);
+                });
+            } else {
+                // User hasn't registered - show registration flow
+                btnStartAbhaFlow.setText("Create/Link ABHA");
+                btnStartAbhaFlow.setOnClickListener(v -> {
+                    Intent intent = new Intent(ABHAActivity.this, AbhaRegistrationActivity.class);
+                    startActivity(intent);
+                });
+            }
+        }
     }
     
     private void setupBottomNavigation() {
@@ -75,5 +110,11 @@ public class ABHAActivity extends AppCompatActivity {
                 finish();
             });
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkABHARegistrationStatus();
     }
 }

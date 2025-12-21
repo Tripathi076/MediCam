@@ -72,9 +72,9 @@ public class DashboardActivity extends AppCompatActivity {
             Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
         });
         
-        // Pathology - Navigate to Pathology page
+        // Reports - Navigate to unified Reports page (showing both Pathology and Radiology)
         navPathology.setOnClickListener(v -> {
-            startActivity(new Intent(DashboardActivity.this, PathologyActivity.class));
+            startActivity(new Intent(DashboardActivity.this, ReportsActivity.class));
             finish();
         });
         

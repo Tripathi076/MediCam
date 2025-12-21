@@ -42,9 +42,8 @@ public class PathologyReportAdapter extends RecyclerView.Adapter<PathologyReport
         
         holder.tvLabName.setText(report.getLabName());
         holder.tvTestName.setText(report.getTestName());
-        holder.tvCollectionDate.setText(report.getCollectionDate());
+        holder.tvDate.setText(report.getCollectionDate());
         holder.tvDoctorName.setText(report.getDoctorName());
-        holder.tvPatientName.setText(report.getPatientName());
         
         // Load report image thumbnail
         if (report.getReportImageUri() != null && !report.getReportImageUri().isEmpty()) {
@@ -92,16 +91,15 @@ public class PathologyReportAdapter extends RecyclerView.Adapter<PathologyReport
 
     public static class ReportViewHolder extends RecyclerView.ViewHolder {
         ImageView ivReportThumbnail;
-        TextView tvLabName, tvTestName, tvCollectionDate, tvDoctorName, tvPatientName;
+        TextView tvLabName, tvTestName, tvDate, tvDoctorName;
 
         public ReportViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivReportThumbnail = itemView.findViewById(R.id.ivReportThumbnail);
+            ivReportThumbnail = itemView.findViewById(R.id.iconContainer);
             tvLabName = itemView.findViewById(R.id.tvLabName);
-            tvTestName = itemView.findViewById(R.id.tvTestName);
-            tvCollectionDate = itemView.findViewById(R.id.tvCollectionDate);
+            tvTestName = itemView.findViewById(R.id.tvTestType);
+            tvDate = itemView.findViewById(R.id.tvDate);
             tvDoctorName = itemView.findViewById(R.id.tvDoctorName);
-            tvPatientName = itemView.findViewById(R.id.tvPatientName);
         }
     }
 }
