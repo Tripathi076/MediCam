@@ -4,24 +4,37 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.medicam.utils.FirebaseErrorHandler;
+import com.example.medicam.utils.SessionManager;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 
 public class AdminLoginActivity extends AppCompatActivity {
+    private static final String TAG = "AdminLoginActivity";
+    
+    private FirebaseAuth mAuth;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_login);
+        
+        mAuth = FirebaseAuth.getInstance();
 
         ImageView btnBack = findViewById(R.id.btnBack);
         TextInputEditText emailEditText = findViewById(R.id.emailEditText);
@@ -29,6 +42,7 @@ public class AdminLoginActivity extends AppCompatActivity {
         TextView tvForgotPassword = findViewById(R.id.tvForgotPassword);
         MaterialButton btnLoginAction = findViewById(R.id.btnLoginAction);
         TextView tvSignUp = findViewById(R.id.tvSignUp);
+        progressBar = findViewById(R.id.progressBar);
 
         btnBack.setOnClickListener(v -> finish());
 
@@ -41,14 +55,7 @@ public class AdminLoginActivity extends AppCompatActivity {
             } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 Toast.makeText(this, "Please enter a valid email", Toast.LENGTH_SHORT).show();
             } else {
-                // TODO: Integrate Firebase Email/Password Authentication
-                // For demo: accept admin@medicam.com with password "admin123"
-                if (email.equals("admin@medicam.com") && password.equals("admin123")) {
-                    showLoginSuccessDialog();
-                } else {
-                    Intent intent = new Intent(AdminLoginActivity.this, LoginUnsuccessActivity.class);
-                    startActivity(intent);
-                }
+                loginWithEmail(email, password);
             }
         });
 
@@ -58,10 +65,41 @@ public class AdminLoginActivity extends AppCompatActivity {
         });
 
         tvSignUp.setOnClickListener(v -> {
-            // Navigate to Admin Sign Up Screen (LoginSignUpActivity)
             Intent intent = new Intent(AdminLoginActivity.this, LoginSignUpActivity.class);
             startActivity(intent);
         });
+    }
+    
+    private void loginWithEmail(String email, String password) {
+        try {
+            progressBar.setVisibility(View.VISIBLE);
+            
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(task -> {
+                        progressBar.setVisibility(View.GONE);
+                        try {
+                            if (task.isSuccessful()) {
+                                String userId = mAuth.getCurrentUser().getUid();
+                                SessionManager sessionManager = SessionManager.getInstance(AdminLoginActivity.this);
+                                sessionManager.saveUserSession(userId, email, "", "");
+                                showLoginSuccessDialog();
+                                Log.d(TAG, "Login successful for: " + email);
+                            } else {
+                                Exception e = task.getException();
+                                String errorMsg = FirebaseErrorHandler.getAuthErrorMessage(e);
+                                Toast.makeText(AdminLoginActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
+                                Log.e(TAG, "Login failed: " + e.getLocalizedMessage(), e);
+                            }
+                        } catch (Exception e) {
+                            FirebaseErrorHandler.logException("loginWithEmail callback", e);
+                        }
+                    });
+        } catch (Exception e) {
+            progressBar.setVisibility(View.GONE);
+            String errorMsg = FirebaseErrorHandler.getAuthErrorMessage(e);
+            Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
+            FirebaseErrorHandler.logException("loginWithEmail", e);
+        }
     }
 
     private void showLoginSuccessDialog() {
