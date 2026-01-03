@@ -47,9 +47,9 @@ public class BMIInputActivity extends AppCompatActivity {
         }
 
         try {
-            int height1 = Integer.parseInt(heightLeftStr);
-            int height2 = Integer.parseInt(heightRightStr);
-            double totalHeightCm = height1 + height2 / 10.0;
+            int heightMeters = Integer.parseInt(heightLeftStr);
+            int heightCm = Integer.parseInt(heightRightStr);
+            int totalHeightCm = heightMeters * 100 + heightCm;
             double weight = Double.parseDouble(weightStr);
             int age = Integer.parseInt(ageStr);
 
