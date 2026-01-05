@@ -69,12 +69,12 @@
             android:textColor="@color/black"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Get OTP Button -->
+    <!-- Continue Button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnGetOTP"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:text="Get OTP"
+        android:text="Continue"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textAllCaps="false"
@@ -130,6 +130,18 @@
         android:layout_marginTop="24dp"
         android:padding="8dp"
         app:layout_constraintTop_toBottomOf="@id/tvOr"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Progress Bar -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:indeterminateTint="@color/medicam_primary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 

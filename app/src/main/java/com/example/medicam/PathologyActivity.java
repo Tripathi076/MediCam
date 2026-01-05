@@ -168,6 +168,12 @@ public class PathologyActivity extends AppCompatActivity {
         }
     }
     
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
     private void setupBottomNavigation() {
         View navHome = findViewById(R.id.navHome);
         View navPathology = findViewById(R.id.navPathology);
@@ -201,7 +207,7 @@ public class PathologyActivity extends AppCompatActivity {
         // BMI
         if (navBMI != null) {
             navBMI.setOnClickListener(v -> {
-                startActivity(new Intent(PathologyActivity.this, BMIActivity.class));
+                startActivity(new Intent(PathologyActivity.this, BMIGenderActivity.class));
                 finish();
             });
         }

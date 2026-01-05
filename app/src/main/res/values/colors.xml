@@ -7,4 +7,7 @@
     <color name="text_primary">#212121</color>
     <color name="text_secondary">#757575</color>
     <color name="medicam_primary_light">#4DB8A8</color>
+    <color name="medicam_success">#4CAF50</color>
+    <color name="medicam_error">#F44336</color>
+    <color name="medicam_warning">#FF9800</color>
 </resources>

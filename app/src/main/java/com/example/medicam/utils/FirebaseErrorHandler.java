@@ -22,7 +22,12 @@ public class FirebaseErrorHandler {
      * Get user-friendly error message from Firebase Auth exception
      */
     public static String getAuthErrorMessage(Exception e) {
+        if (e == null) {
+            return "An unknown error occurred. Please try again.";
+        }
+        
         Log.e(TAG, "Auth Error: " + e.getLocalizedMessage(), e);
+        Log.e(TAG, "Exception class: " + e.getClass().getName());
 
         if (e instanceof FirebaseAuthWeakPasswordException) {
             return "Password is too weak. Use at least 6 characters with letters and numbers.";
@@ -33,13 +38,26 @@ public class FirebaseErrorHandler {
         } else if (e instanceof FirebaseAuthUserCollisionException) {
             return "This email is already registered. Please login instead.";
         } else if (e.getLocalizedMessage() != null) {
-            if (e.getLocalizedMessage().contains("password is invalid")) {
+            String msg = e.getLocalizedMessage().toLowerCase();
+            if (msg.contains("password is invalid")) {
                 return "Invalid password. Please try again.";
-            } else if (e.getLocalizedMessage().contains("There is no user record")) {
+            } else if (msg.contains("there is no user record")) {
                 return "User not found. Please sign up first.";
-            } else if (e.getLocalizedMessage().contains("too many requests")) {
-                return "Too many login attempts. Please try again later.";
+            } else if (msg.contains("too many requests")) {
+                return "Too many attempts. Please try again later.";
+            } else if (msg.contains("network") || msg.contains("connection")) {
+                return "Network error. Please check your internet connection.";
+            } else if (msg.contains("email") && msg.contains("badly formatted")) {
+                return "Invalid email format. Please enter a valid email.";
+            } else if (msg.contains("email") && msg.contains("already in use")) {
+                return "This email is already registered. Please login instead.";
+            } else if (msg.contains("internal error") || msg.contains("billing")) {
+                return "Service temporarily unavailable. Please try again later.";
+            } else if (msg.contains("sign_in_method") || msg.contains("not enabled")) {
+                return "Email/Password sign-in is not enabled. Please contact support.";
             }
+            // Return the actual Firebase message for debugging
+            return "Error: " + e.getLocalizedMessage();
         }
         return "Authentication failed. Please try again.";
     }

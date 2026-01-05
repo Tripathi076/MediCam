@@ -1,195 +1,300 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<?xml version="1.0" encoding="utf-8"?><manifest xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" 
-        android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.CAMERA" />
+<uses-permission
+    android:name="android.permission.READ_EXTERNAL_STORAGE"
+    android:maxSdkVersion="32" />
+<uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
-    <application
-        android:allowBackup="true"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
+<!-- Bluetooth Permissions -->
+<uses-permission
+    android:name="android.permission.BLUETOOTH"
+    android:maxSdkVersion="30" />
+<uses-permission
+    android:name="android.permission.BLUETOOTH_ADMIN"
+    android:maxSdkVersion="30" />
+<uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+<uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+<!-- Emergency & Notification Permissions -->
+<uses-permission android:name="android.permission.CALL_PHONE" />
+<uses-permission android:name="android.permission.SEND_SMS" />
+<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+<uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+<uses-permission android:name="android.permission.VIBRATE" />
+<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+<uses-feature
+    android:name="android.hardware.bluetooth"
+    android:required="false" />
+<uses-feature
+    android:name="android.hardware.bluetooth_le"
+    android:required="false" />
+
+<application
+    android:allowBackup="true"
+    android:dataExtractionRules="@xml/data_extraction_rules"
+    android:fullBackupContent="@xml/backup_rules"
+    android:icon="@drawable/ic_launcher"
+    android:label="@string/app_name"
+    android:roundIcon="@mipmap/ic_launcher_round"
+    android:supportsRtl="true"
+    android:theme="@style/Theme.MediCam">
+
+    <activity
+        android:name=".SplashActivity"
+        android:exported="true"
         android:theme="@style/Theme.MediCam">
-        
-        <activity
-            android:name=".SplashActivity"
-            android:exported="true"
-            android:theme="@style/Theme.MediCam"> 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity>
 
-        <activity
-            android:name=".MainActivity"
-            android:exported="true" />
+    <activity
+        android:name=".MainActivity"
+        android:exported="true" />
 
-        <activity
-            android:name=".AdminLoginActivity"
-            android:exported="false" />
+    <activity
+        android:name=".AdminLoginActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".SignUpActivity"
-            android:exported="false" />
+    <activity
+        android:name=".SignUpActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".LoginSignUpActivity"
-            android:exported="false" />
 
-        <activity
-            android:name=".DashboardActivity"
-            android:exported="false" />
+    <activity
+        android:name=".DashboardActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".PathologyActivity"
-            android:exported="false" />
+    <activity
+        android:name=".PathologyActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".UploadPathologyReportActivity"
-            android:exported="false" />
+    <activity
+        android:name=".UploadPathologyReportActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".SelectReportSourceActivity"
-            android:exported="false" />
+    <activity
+        android:name=".SelectReportSourceActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".ReportPreviewActivity"
-            android:exported="false" />
+    <activity
+        android:name=".ReportPreviewActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".ReportDetailActivity"
-            android:exported="false" />
+    <activity
+        android:name=".ReportDetailActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".ABHAActivity"
-            android:exported="false" />
+    <activity
+        android:name=".ABHAActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".AbhaRegistrationActivity"
-            android:exported="false" />
+    <activity
+        android:name=".AbhaRegistrationActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".AbhaCreateProfileActivity"
-            android:exported="false" />
+    <activity
+        android:name=".AbhaCreateProfileActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".AbhaVerifyAadhaarOtpActivity"
-            android:exported="false" />
+    <activity
+        android:name=".AbhaVerifyAadhaarOtpActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".AbhaLinkMobileActivity"
-            android:exported="false" />
+    <activity
+        android:name=".AbhaLinkMobileActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".AbhaVerifyMobileOtpActivity"
-            android:exported="false" />
+    <activity
+        android:name=".AbhaVerifyMobileOtpActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".AbhaChooseUsernameActivity"
-            android:exported="false" />
+    <activity
+        android:name=".AbhaChooseUsernameActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".AbhaSuccessActivity"
-            android:exported="false" />
+    <activity
+        android:name=".AbhaSuccessActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".BMIActivity"
-            android:exported="false" />
+    <activity
+        android:name=".BMIActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".BMIGenderActivity"
-            android:exported="false" />
+    <activity
+        android:name=".BMIGenderActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".BMIInputActivity"
-            android:exported="false" />
+    <activity
+        android:name=".BMIInputActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".BMIResultActivity"
-            android:exported="false" />
+    <activity
+        android:name=".BMIResultActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".DevicesActivity"
-            android:exported="false" />
+    <activity
+        android:name=".DevicesActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".PhoneLoginActivity"
-            android:exported="false" />
+    <activity
+        android:name=".AIChatActivity"
+        android:exported="false"
+        android:windowSoftInputMode="adjustResize" />
 
-        <activity
-            android:name=".OTPVerificationActivity"
-            android:exported="false" />
+    <activity
+        android:name=".PhoneLoginActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".LoginSuccessActivity"
-            android:exported="false" />
+    <activity
+        android:name=".PasswordPinActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".LoginUnsuccessActivity"
-            android:exported="false" />
+    <activity
+        android:name=".PinLoginActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".ForgotPasswordActivity"
-            android:exported="false" />
+    <activity
+        android:name=".RadiologyActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".ResetPasswordOTPActivity"
-            android:exported="false" />
+    <activity
+        android:name=".UploadRadiologyReportActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".CreateNewPasswordActivity"
-            android:exported="false" />
+    <activity
+        android:name=".SelectRadiologySourceActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".PasswordResetSuccessActivity"
-            android:exported="false" />
+    <activity
+        android:name=".RadiologyPreviewActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".RadiologyActivity"
-            android:exported="false" />
+    <activity
+        android:name=".RadiologyDetailActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".UploadRadiologyReportActivity"
-            android:exported="false" />
+    <activity
+        android:name=".ABHACardDisplayActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".SelectRadiologySourceActivity"
-            android:exported="false" />
+    <activity
+        android:name=".ReportsActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".RadiologyPreviewActivity"
-            android:exported="false" />
+    <!-- Health Tools Activities -->
+    <activity
+        android:name=".MedicationReminderActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".RadiologyDetailActivity"
-            android:exported="false" />
+    <activity
+        android:name=".VitalsTrackerActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".ABHACardDisplayActivity"
-            android:exported="false" />
+    <activity
+        android:name=".SymptomCheckerActivity"
+        android:exported="false" />
 
-        <activity
-            android:name=".ReportsActivity"
-            android:exported="false" />
+    <activity
+        android:name=".AppointmentSchedulerActivity"
+        android:exported="false" />
 
-        <!-- FileProvider for sharing files -->
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="com.example.medicam.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
-            
-    </application>
+    <activity
+        android:name=".EmergencySosActivity"
+        android:exported="false" />
+
+    <activity
+        android:name=".WaterTrackerActivity"
+        android:exported="false" />
+
+    <activity
+        android:name=".FamilyHealthProfilesActivity"
+        android:exported="false" />
+
+    <activity
+        android:name=".LabTestBookingActivity"
+        android:exported="false" />
+
+    <activity
+        android:name=".BookingActivity"
+        android:exported="false" />
+
+    <activity
+        android:name=".PersonalNutritionActivity"
+        android:exported="false" />
+
+    <!-- Profile Activities -->
+    <activity
+        android:name=".ProfileActivity"
+        android:exported="false" />
+
+    <activity
+        android:name=".PersonalInformationActivity"
+        android:exported="false" />
+
+    <activity
+        android:name=".EditProfileActivity"
+        android:exported="false" />
+
+    <activity
+        android:name=".FamilyDetailsActivity"
+        android:exported="false" />
+
+    <activity
+        android:name=".AddFamilyMemberActivity"
+        android:exported="false" />
+
+    <activity
+        android:name=".FamilyMemberInfoActivity"
+        android:exported="false" />
+
+    <activity
+        android:name=".SettingsActivity"
+        android:exported="false" />
+
+    <activity
+        android:name=".HelpSupportActivity"
+        android:exported="false" />
+
+    <activity
+        android:name=".AboutActivity"
+        android:exported="false" />
+
+    <activity
+        android:name=".AddressDetailsActivity"
+        android:exported="false" />
+
+    <activity
+        android:name=".HealthInformationActivity"
+        android:exported="false" />
+
+    <!-- Broadcast Receivers -->
+    <receiver
+        android:name=".MedicationReminderReceiver"
+        android:exported="false" />
+
+    <receiver
+        android:name=".AppointmentReminderReceiver"
+        android:exported="false" />
+
+    <!-- FileProvider for sharing files -->
+    <provider
+        android:name="androidx.core.content.FileProvider"
+        android:authorities="com.example.medicam.fileprovider"
+        android:exported="false"
+        android:grantUriPermissions="true">
+        <meta-data
+            android:name="android.support.FILE_PROVIDER_PATHS"
+            android:resource="@xml/file_paths" />
+    </provider>
+
+</application>
 
 </manifest>

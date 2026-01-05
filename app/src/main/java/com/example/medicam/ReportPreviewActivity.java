@@ -1,7 +1,14 @@
 package com.example.medicam;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.Context;
+import android.util.Log;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.example.medicam.utils.SessionManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -56,54 +63,63 @@ public class ReportPreviewActivity extends AppCompatActivity {
     private void saveReport() {
         // Determine category based on test name
         String category = determineCategory(testName);
-        
-        // Create new report object
-        PathologyReport newReport = new PathologyReport(
-            labName,
-            testName,
-            sampleDate,
-            doctorName,
-            patientName,
-            fileUri.toString(),
-            category
-        );
-        
-        // Load existing reports from SharedPreferences
-        SharedPreferences prefs = getSharedPreferences("PathologyReports", MODE_PRIVATE);
-        String json = prefs.getString("reports_list", null);
-        
-        List<PathologyReport> reportsList;
-        if (json != null) {
-            Gson gson = new Gson();
-            Type type = new TypeToken<List<PathologyReport>>(){}.getType();
-            reportsList = gson.fromJson(json, type);
-            if (reportsList == null) {
-                reportsList = new ArrayList<>();
-            }
-        } else {
-            reportsList = new ArrayList<>();
+
+        // Get userId from SessionManager
+        String userId = SessionManager.getInstance(this).getUserId();
+        if (userId == null) {
+            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
+            return;
         }
-        
-        // Add new report to the beginning of the list
-        reportsList.add(0, newReport);
-        
-        // Save updated list to SharedPreferences
-        Gson gson = new Gson();
-        String updatedJson = gson.toJson(reportsList);
-        prefs.edit().putString("reports_list", updatedJson).apply();
-        
-        Toast.makeText(this, "Report Saved Successfully!", Toast.LENGTH_SHORT).show();
-        
-        // Navigate to report detail view
-        Intent intent = new Intent(ReportPreviewActivity.this, ReportDetailActivity.class);
-        intent.putExtra("LAB_NAME", labName);
-        intent.putExtra("TEST_NAME", testName);
-        intent.putExtra("COLLECTION_DATE", sampleDate);
-        intent.putExtra("DOCTOR_NAME", doctorName);
-        intent.putExtra("PATIENT_NAME", patientName);
-        intent.putExtra("REPORT_IMAGE_URI", fileUri.toString());
-        startActivity(intent);
-        finish();
+
+        // Show progress
+        Toast.makeText(this, "Uploading report...", Toast.LENGTH_SHORT).show();
+
+        // Upload image to Firebase Storage
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        String fileName = "reports/" + userId + "/" + System.currentTimeMillis() + ".jpg";
+        StorageReference reportImageRef = storageRef.child(fileName);
+
+        reportImageRef.putFile(fileUri)
+            .addOnSuccessListener(taskSnapshot -> reportImageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                // On image upload success, save metadata to Firebase Database
+                PathologyReport newReport = new PathologyReport(
+                        labName,
+                        testName,
+                        sampleDate,
+                        doctorName,
+                        patientName,
+                        uri.toString(),
+                        category
+                );
+
+                DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+                String reportId = dbRef.child("reports").child(userId).push().getKey();
+                dbRef.child("reports").child(userId).child(reportId).setValue(newReport)
+                        .addOnSuccessListener(aVoid -> {
+                            Toast.makeText(this, "Report Saved Successfully!", Toast.LENGTH_SHORT).show();
+                            // Navigate to report detail view
+                            Intent intent = new Intent(ReportPreviewActivity.this, ReportDetailActivity.class);
+                            intent.putExtra("LAB_NAME", labName);
+                            intent.putExtra("TEST_NAME", testName);
+                            intent.putExtra("COLLECTION_DATE", sampleDate);
+                            intent.putExtra("DOCTOR_NAME", doctorName);
+                            intent.putExtra("PATIENT_NAME", patientName);
+                            intent.putExtra("REPORT_IMAGE_URI", uri.toString());
+                            startActivity(intent);
+                            finish();
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(this, "Failed to save report metadata", Toast.LENGTH_SHORT).show();
+                            Log.e("ReportPreview", "DB error: ", e);
+                        });
+            }).addOnFailureListener(e -> {
+                Toast.makeText(this, "Failed to get image URL", Toast.LENGTH_SHORT).show();
+                Log.e("ReportPreview", "URL error: ", e);
+            }))
+            .addOnFailureListener(e -> {
+                Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show();
+                Log.e("ReportPreview", "Upload error: ", e);
+            });
     }
     
     private String determineCategory(String testName) {

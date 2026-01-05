@@ -1,130 +1,84 @@
 package com.example.medicam;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.medicam.utils.FirebaseErrorHandler;
-import com.example.medicam.utils.SessionManager;
 import com.google.android.material.button.MaterialButton;
-import com.google.firebase.FirebaseException;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.PhoneAuthCredential;
-import com.google.firebase.auth.PhoneAuthOptions;
-import com.google.firebase.auth.PhoneAuthProvider;
-
-import java.util.concurrent.TimeUnit;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.example.medicam.utils.NetworkUtils;
+import com.example.medicam.utils.FirebaseInitializer;
 
 public class PhoneLoginActivity extends AppCompatActivity {
     private static final String TAG = "PhoneLoginActivity";
 
     private EditText etPhoneNumber;
-    private MaterialButton btnGetOTP;
+    private MaterialButton btnContinue;
     private TextView tvAdminPortal;
     private ProgressBar progressBar;
     
-    private FirebaseAuth mAuth;
-    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+    private DatabaseReference usersRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_login);
 
-        // Initialize Firebase and Session Manager
-        mAuth = FirebaseAuth.getInstance();
+        // Initialize Firebase with persistence enabled
+        FirebaseInitializer.initialize();
+        
+        // Initialize Firebase Database
+        usersRef = FirebaseDatabase.getInstance().getReference("users");
         
         // Initialize views
         etPhoneNumber = findViewById(R.id.etPhoneNumber);
-        btnGetOTP = findViewById(R.id.btnGetOTP);
+        btnContinue = findViewById(R.id.btnGetOTP);
         tvAdminPortal = findViewById(R.id.tvAdminPortal);
         progressBar = findViewById(R.id.progressBar);
         
-        setupPhoneAuthCallbacks();
         setupListeners();
     }
     
-    private void setupPhoneAuthCallbacks() {
-        mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-            @Override
-            public void onVerificationCompleted(PhoneAuthCredential credential) {
-                try {
-                    Log.d(TAG, "Verification completed successfully");
-                    signInWithCredential(credential);
-                } catch (Exception e) {
-                    FirebaseErrorHandler.logException("onVerificationCompleted", e);
-                }
-            }
-
-            @Override
-            public void onVerificationFailed(FirebaseException e) {
-                try {
-                    progressBar.setVisibility(View.GONE);
-                    btnGetOTP.setEnabled(true);
-                    String errorMsg = FirebaseErrorHandler.getAuthErrorMessage(e);
-                    Toast.makeText(PhoneLoginActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "Verification failed: " + e.getLocalizedMessage(), e);
-                } catch (Exception ex) {
-                    FirebaseErrorHandler.logException("onVerificationFailed", ex);
-                }
-            }
-
-            @Override
-            public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
-                try {
-                    Log.d(TAG, "Code sent successfully");
-                    mVerificationId = verificationId;
-                    mResendToken = token;
-                    progressBar.setVisibility(View.GONE);
-                    
-                    // Navigate to OTP verification screen
-                    Intent intent = new Intent(PhoneLoginActivity.this, OTPVerificationActivity.class);
-                    intent.putExtra("phoneNumber", etPhoneNumber.getText().toString().trim());
-                    intent.putExtra("verificationId", verificationId);
-                    startActivity(intent);
-                    finish();
-                } catch (Exception e) {
-                    FirebaseErrorHandler.logException("onCodeSent", e);
-                }
-            }
-        };
-    }
-    
     private void setupListeners() {
-        // Format phone number as user types
+        // Enable button when phone number is 10 digits
         etPhoneNumber.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // Empty implementation - no action needed before text change
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // Empty implementation - text formatting handled in afterTextChanged
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
             public void afterTextChanged(Editable s) {
-                // Enable button only if phone number is 10 digits
                 String phone = s.toString().trim();
-                btnGetOTP.setEnabled(phone.length() == 10);
+                btnContinue.setEnabled(phone.length() == 10);
             }
         });
 
-        // Get OTP button click
-        btnGetOTP.setOnClickListener(v -> {
+        // Continue button click
+        btnContinue.setOnClickListener(v -> {
             String phoneNumber = etPhoneNumber.getText().toString().trim();
             if (phoneNumber.length() == 10) {
-                sendOTP(phoneNumber);
+                checkPhoneInDatabase(phoneNumber);
             } else {
                 Toast.makeText(this, "Please enter valid 10 digit phone number", Toast.LENGTH_SHORT).show();
             }
@@ -137,61 +91,122 @@ public class PhoneLoginActivity extends AppCompatActivity {
         });
     }
     
-    private void sendOTP(String phoneNumber) {
-        try {
-            progressBar.setVisibility(View.VISIBLE);
-            btnGetOTP.setEnabled(false);
-            
-            String fullPhoneNumber = "+91" + phoneNumber;
-            
-            PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
-                    .setPhoneNumber(fullPhoneNumber)
-                    .setTimeout(60L, TimeUnit.SECONDS)
-                    .setActivity(PhoneLoginActivity.this)
-                    .setCallbacks(mCallbacks)
-                    .build();
-            
-            PhoneAuthProvider.verifyPhoneNumber(options);
-            Log.d(TAG, "OTP send initiated for: " + fullPhoneNumber);
-        } catch (Exception e) {
-            progressBar.setVisibility(View.GONE);
-            btnGetOTP.setEnabled(true);
-            String errorMsg = FirebaseErrorHandler.getAuthErrorMessage(e);
-            Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
-            FirebaseErrorHandler.logException("sendOTP", e);
+    private void checkPhoneInDatabase(String phoneNumber) {
+        // Check network connectivity first
+        if (!NetworkUtils.isNetworkAvailable(this)) {
+            Toast.makeText(this, "No internet connection. Please check your network.", Toast.LENGTH_SHORT).show();
+            btnContinue.setEnabled(true);
+            return;
+        }
+        
+        if (progressBar != null) progressBar.setVisibility(View.VISIBLE);
+        btnContinue.setEnabled(false);
+        
+        Log.d(TAG, "=== SEARCHING FOR PHONE ===");
+        Log.d(TAG, "Phone entered: '" + phoneNumber + "'");
+        Log.d(TAG, "Phone length: " + phoneNumber.length());
+        
+        // Read all users and filter by phone (more reliable than orderByChild)
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (progressBar != null) progressBar.setVisibility(View.GONE);
+                btnContinue.setEnabled(true);
+                
+                Log.d(TAG, "=== DATABASE CONTAINS ===");
+                Log.d(TAG, "Total users: " + snapshot.getChildrenCount());
+                
+                DataSnapshot foundUser = null;
+                
+                // Loop through all users and find matching phone
+                for (DataSnapshot userSnap : snapshot.getChildren()) {
+                    String storedPhone = userSnap.child("phone").getValue(String.class);
+                    String userName = userSnap.child("name").getValue(String.class);
+                    String userId = userSnap.getKey();
+                    
+                    Log.d(TAG, "User ID: " + userId + 
+                            " | Phone: '" + storedPhone + "' | Name: " + userName);
+                    
+                    // Compare phones (trim both to remove spaces)
+                    if (storedPhone != null && storedPhone.trim().equals(phoneNumber.trim())) {
+                        Log.d(TAG, "✓ MATCH FOUND for phone: " + phoneNumber);
+                        foundUser = userSnap;
+                        break;
+                    }
+                }
+                
+                if (foundUser != null) {
+                    // User found
+                    String userId = foundUser.getKey();
+                    String pin = foundUser.child("pin").getValue(String.class);
+                    
+                    Log.d(TAG, "Login: User ID: " + userId + ", PIN set: " + (pin != null && !pin.isEmpty()));
+                    
+                    if (pin != null && !pin.isEmpty()) {
+                        Intent intent = new Intent(PhoneLoginActivity.this, PinLoginActivity.class);
+                        intent.putExtra("phoneNumber", phoneNumber);
+                        intent.putExtra("userId", userId);
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(PhoneLoginActivity.this, PasswordPinActivity.class);
+                        intent.putExtra("phoneNumber", phoneNumber);
+                        intent.putExtra("userId", userId);
+                        startActivity(intent);
+                    }
+                } else {
+                    Log.d(TAG, "✗ NO MATCH for phone: " + phoneNumber);
+                    showNotRegisteredDialog();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                if (progressBar != null) progressBar.setVisibility(View.GONE);
+                btnContinue.setEnabled(true);
+                
+                Log.e(TAG, "Database error code: " + error.getCode());
+                Log.e(TAG, "Database error message: " + error.getMessage());
+                
+                String errorMsg = getErrorMessage(error);
+                Toast.makeText(PhoneLoginActivity.this, errorMsg, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+    
+    private String getErrorMessage(DatabaseError error) {
+        switch (error.getCode()) {
+            case DatabaseError.PERMISSION_DENIED:
+                return "Permission denied. Unable to access database. Check Firebase rules.";
+            case DatabaseError.UNAVAILABLE:
+                return "Database service unavailable. Please try again later.";
+            case DatabaseError.NETWORK_ERROR:
+                return "Network error. Please check your internet connection.";
+            case DatabaseError.DISCONNECTED:
+                return "Disconnected from database. Reconnecting...";
+            default:
+                return "Error: " + error.getMessage();
         }
     }
     
-    private void signInWithCredential(PhoneAuthCredential credential) {
-        try {
-            progressBar.setVisibility(View.VISIBLE);
-            mAuth.signInWithCredential(credential)
-                    .addOnCompleteListener(task -> {
-                        progressBar.setVisibility(View.GONE);
-                        try {
-                            if (task.isSuccessful()) {
-                                String userId = mAuth.getCurrentUser().getUid();
-                                String phoneNumber = etPhoneNumber.getText().toString().trim();
-                                SessionManager sessionManager = SessionManager.getInstance(PhoneLoginActivity.this);
-                                sessionManager.saveUserSession(userId, "", phoneNumber, "");
-                                
-                                Toast.makeText(PhoneLoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(PhoneLoginActivity.this, DashboardActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                            } else {
-                                String errorMsg = FirebaseErrorHandler.getAuthErrorMessage(task.getException());
-                                Toast.makeText(PhoneLoginActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (Exception e) {
-                            FirebaseErrorHandler.logException("signInWithCredential", e);
-                        }
-                    });
-        } catch (Exception e) {
-            progressBar.setVisibility(View.GONE);
-            String errorMsg = FirebaseErrorHandler.getAuthErrorMessage(e);
-            Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
-            FirebaseErrorHandler.logException("signInWithCredential", e);
-        }
+    private void showNotRegisteredDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Not Registered");
+        builder.setMessage("This phone number is not registered. Please sign up first to create an account.");
+        builder.setCancelable(true);
+        
+        builder.setPositiveButton("Sign Up", (dialog, which) -> {
+            dialog.dismiss();
+            // Navigate to Sign Up page
+            Intent intent = new Intent(PhoneLoginActivity.this, SignUpActivity.class);
+            startActivity(intent);
+        });
+        
+        builder.setNegativeButton("Cancel", (dialog, which) -> {
+            dialog.dismiss();
+            etPhoneNumber.setText("");
+            etPhoneNumber.requestFocus();
+        });
+        
+        builder.show();
     }
 }

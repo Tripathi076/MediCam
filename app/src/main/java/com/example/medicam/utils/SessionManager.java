@@ -23,6 +23,13 @@ public class SessionManager {
     private static final String KEY_REFRESH_TOKEN = "refresh_token";
     private static final String KEY_ABHA_NUMBER = "abha_number";
     private static final String KEY_SESSION_TIMESTAMP = "session_timestamp";
+    private static final String KEY_LAST_ACTIVE_TIME = "last_active_time";
+    private static final String KEY_BIOMETRIC_ENABLED = "biometric_enabled";
+    private static final String KEY_AUTO_LOCK_ENABLED = "auto_lock_enabled";
+    
+    // Session timeout durations
+    private static final long SESSION_TIMEOUT_MS = 24 * 60 * 60 * 1000L; // 24 hours
+    private static final long AUTO_LOCK_TIMEOUT_MS = 5 * 60 * 1000L; // 5 minutes of inactivity
 
     private SharedPreferences encryptedSharedPreferences;
     private static SessionManager instance;
@@ -172,7 +179,66 @@ public class SessionManager {
     public boolean isSessionValid() {
         long sessionTime = getSessionTimestamp();
         long currentTime = System.currentTimeMillis();
-        long twentyFourHoursMs = 24 * 60 * 60 * 1000L;
-        return (currentTime - sessionTime) < twentyFourHoursMs;
+        return (currentTime - sessionTime) < SESSION_TIMEOUT_MS;
+    }
+    
+    /**
+     * Update last active time (call this when user interacts with app)
+     */
+    public void updateLastActiveTime() {
+        SharedPreferences.Editor editor = encryptedSharedPreferences.edit();
+        editor.putLong(KEY_LAST_ACTIVE_TIME, System.currentTimeMillis());
+        editor.apply();
+    }
+    
+    /**
+     * Get last active time
+     */
+    public long getLastActiveTime() {
+        return encryptedSharedPreferences.getLong(KEY_LAST_ACTIVE_TIME, System.currentTimeMillis());
+    }
+    
+    /**
+     * Check if app should be locked due to inactivity
+     * @return true if app was inactive for more than 5 minutes
+     */
+    public boolean shouldAutoLock() {
+        if (!isAutoLockEnabled()) return false;
+        
+        long lastActive = getLastActiveTime();
+        long currentTime = System.currentTimeMillis();
+        return (currentTime - lastActive) > AUTO_LOCK_TIMEOUT_MS;
+    }
+    
+    /**
+     * Enable/disable biometric authentication
+     */
+    public void setBiometricEnabled(boolean enabled) {
+        SharedPreferences.Editor editor = encryptedSharedPreferences.edit();
+        editor.putBoolean(KEY_BIOMETRIC_ENABLED, enabled);
+        editor.apply();
+    }
+    
+    /**
+     * Check if biometric authentication is enabled
+     */
+    public boolean isBiometricEnabled() {
+        return encryptedSharedPreferences.getBoolean(KEY_BIOMETRIC_ENABLED, false);
+    }
+    
+    /**
+     * Enable/disable auto-lock on inactivity
+     */
+    public void setAutoLockEnabled(boolean enabled) {
+        SharedPreferences.Editor editor = encryptedSharedPreferences.edit();
+        editor.putBoolean(KEY_AUTO_LOCK_ENABLED, enabled);
+        editor.apply();
+    }
+    
+    /**
+     * Check if auto-lock is enabled
+     */
+    public boolean isAutoLockEnabled() {
+        return encryptedSharedPreferences.getBoolean(KEY_AUTO_LOCK_ENABLED, true); // Default: enabled
     }
 }

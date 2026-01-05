@@ -3,11 +3,13 @@ package com.example.medicam;
 public class PathologyReport {
     private String labName;
     private String testName;
+    private String testType;
     private String collectionDate;
+    private String reportDate;
     private String doctorName;
     private String patientName;
     private String reportImageUri;
-    private String category; // "Blood Tests", "Genetic Tests", "Biopsy", "Others"
+    private String category; // "Pathology", "Radiology"
 
     public PathologyReport() {
     }
@@ -39,12 +41,28 @@ public class PathologyReport {
         this.testName = testName;
     }
 
+    public String getTestType() {
+        return testType;
+    }
+
+    public void setTestType(String testType) {
+        this.testType = testType;
+    }
+
     public String getCollectionDate() {
         return collectionDate;
     }
 
     public void setCollectionDate(String collectionDate) {
         this.collectionDate = collectionDate;
+    }
+
+    public String getReportDate() {
+        return reportDate;
+    }
+
+    public void setReportDate(String reportDate) {
+        this.reportDate = reportDate;
     }
 
     public String getDoctorName() {

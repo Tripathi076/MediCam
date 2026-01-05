@@ -16,16 +16,29 @@
         android:background="@color/medicam_primary"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_back"
+            android:contentDescription="Back"
+            app:tint="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="BMI Tracker"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginStart="12dp"
+            app:layout_constraintStart_toEndOf="@id/btnBack"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -69,7 +82,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@color/white"
-        android:paddingVertical="8dp"
+        android:paddingVertical="12dp"
+        android:paddingHorizontal="0dp"
+        android:minHeight="64dp"
         android:elevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -77,11 +92,11 @@
         <LinearLayout
             android:id="@+id/navHome"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
-            android:paddingVertical="6dp">
+            android:padding="4dp">
 
             <ImageView
                 android:layout_width="24dp"
@@ -90,23 +105,26 @@
                 app:tint="#BDBDBD"/>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Home"
                 android:textColor="#BDBDBD"
                 android:textSize="11sp"
-                android:layout_marginTop="4dp"/>
+                android:layout_marginTop="3dp"
+                android:gravity="center"
+                android:maxLines="1"
+                android:ellipsize="end"/>
         </LinearLayout>
 
         <!-- Pathology -->
         <LinearLayout
             android:id="@+id/navPathology"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
-            android:paddingVertical="6dp">
+            android:padding="4dp">
 
             <ImageView
                 android:layout_width="24dp"
@@ -115,23 +133,26 @@
                 app:tint="#BDBDBD"/>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Pathology"
+                android:text="Reports"
                 android:textColor="#BDBDBD"
                 android:textSize="11sp"
-                android:layout_marginTop="4dp"/>
+                android:layout_marginTop="3dp"
+                android:gravity="center"
+                android:maxLines="1"
+                android:ellipsize="end"/>
         </LinearLayout>
 
         <!-- ABHA -->
         <LinearLayout
             android:id="@+id/navABHA"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
-            android:paddingVertical="6dp">
+            android:padding="4dp">
 
             <ImageView
                 android:layout_width="24dp"
@@ -140,23 +161,26 @@
                 app:tint="#BDBDBD"/>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="ABHA"
                 android:textColor="#BDBDBD"
                 android:textSize="11sp"
-                android:layout_marginTop="4dp"/>
+                android:layout_marginTop="3dp"
+                android:gravity="center"
+                android:maxLines="1"
+                android:ellipsize="end"/>
         </LinearLayout>
 
         <!-- BMI -->
         <LinearLayout
             android:id="@+id/navBMI"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
-            android:paddingVertical="6dp"
+            android:padding="4dp"
             android:background="@drawable/bg_nav_item_selected">
 
             <ImageView
@@ -166,24 +190,27 @@
                 app:tint="@color/medicam_primary"/>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="BMI"
                 android:textColor="@color/medicam_primary"
                 android:textSize="11sp"
                 android:textStyle="bold"
-                android:layout_marginTop="4dp"/>
+                android:layout_marginTop="3dp"
+                android:gravity="center"
+                android:maxLines="1"
+                android:ellipsize="end"/>
         </LinearLayout>
 
         <!-- Devices -->
         <LinearLayout
             android:id="@+id/navDevices"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
-            android:paddingVertical="6dp">
+            android:padding="4dp">
 
             <ImageView
                 android:layout_width="24dp"
@@ -192,12 +219,15 @@
                 app:tint="#BDBDBD"/>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Devices"
                 android:textColor="#BDBDBD"
                 android:textSize="11sp"
-                android:layout_marginTop="4dp"/>
+                android:layout_marginTop="3dp"
+                android:gravity="center"
+                android:maxLines="1"
+                android:ellipsize="end"/>
         </LinearLayout>
 
     </LinearLayout>

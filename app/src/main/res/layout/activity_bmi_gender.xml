@@ -10,7 +10,7 @@
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/header_background"
+        android:background="@color/medicam_primary"
         android:padding="16dp"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -30,12 +30,12 @@
             android:layout_height="wrap_content"
             android:text="BMI Calculator"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/btnBack"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginStart="16dp" />
+            android:layout_marginStart="12dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -132,6 +132,20 @@
                 android:backgroundTint="@color/medicam_primary"
                 app:cornerRadius="12dp" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnViewHistory"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="12dp"
+                android:text="View BMI History"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                android:textColor="@color/medicam_primary"
+                android:backgroundTint="@color/white"
+                app:cornerRadius="12dp"
+                app:strokeColor="@color/medicam_primary"
+                app:strokeWidth="2dp" />
+
         </LinearLayout>
     </ScrollView>
 
@@ -143,17 +157,19 @@
         android:orientation="horizontal"
         android:background="@color/white"
         android:elevation="8dp"
-        android:paddingVertical="8dp"
+        android:paddingVertical="12dp"
+        android:paddingHorizontal="0dp"
+        android:minHeight="64dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
             android:id="@+id/navHome"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
-            android:padding="8dp">
+            android:padding="4dp">
 
             <ImageView
                 android:layout_width="24dp"
@@ -162,22 +178,25 @@
                 app:tint="@color/text_secondary" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Home"
                 android:textSize="11sp"
                 android:textColor="@color/text_secondary"
-                android:layout_marginTop="4dp" />
+                android:layout_marginTop="3dp"
+                android:gravity="center"
+                android:maxLines="1"
+                android:ellipsize="end" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/navPathology"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
-            android:padding="8dp">
+            android:padding="4dp">
 
             <ImageView
                 android:layout_width="24dp"
@@ -186,22 +205,25 @@
                 app:tint="@color/text_secondary" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Pathology"
+                android:text="Reports"
                 android:textSize="11sp"
                 android:textColor="@color/text_secondary"
-                android:layout_marginTop="4dp" />
+                android:layout_marginTop="3dp"
+                android:gravity="center"
+                android:maxLines="1"
+                android:ellipsize="end" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/navABHA"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
-            android:padding="8dp">
+            android:padding="4dp">
 
             <ImageView
                 android:layout_width="24dp"
@@ -210,22 +232,25 @@
                 app:tint="@color/text_secondary" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="ABHA"
                 android:textSize="11sp"
                 android:textColor="@color/text_secondary"
-                android:layout_marginTop="4dp" />
+                android:layout_marginTop="3dp"
+                android:gravity="center"
+                android:maxLines="1"
+                android:ellipsize="end" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/navBMI"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
-            android:padding="8dp"
+            android:padding="4dp"
             android:background="@drawable/bg_nav_item_selected">
 
             <ImageView
@@ -235,23 +260,26 @@
                 app:tint="@color/medicam_primary" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="BMI"
                 android:textSize="11sp"
                 android:textColor="@color/medicam_primary"
                 android:textStyle="bold"
-                android:layout_marginTop="4dp" />
+                android:layout_marginTop="3dp"
+                android:gravity="center"
+                android:maxLines="1"
+                android:ellipsize="end" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/navDevices"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
-            android:padding="8dp">
+            android:padding="4dp">
 
             <ImageView
                 android:layout_width="24dp"
@@ -260,12 +288,15 @@
                 app:tint="@color/text_secondary" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Devices"
                 android:textSize="11sp"
                 android:textColor="@color/text_secondary"
-                android:layout_marginTop="4dp" />
+                android:layout_marginTop="3dp"
+                android:gravity="center"
+                android:maxLines="1"
+                android:ellipsize="end" />
         </LinearLayout>
 
     </LinearLayout>

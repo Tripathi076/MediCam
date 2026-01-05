@@ -10,8 +10,8 @@
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/header_background"
         android:padding="16dp"
+        android:background="@color/medicam_primary"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
@@ -28,25 +28,105 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Radiology Report"
+            android:text="Radiology Reports"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/btnBack"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginStart="16dp" />
+            android:layout_marginStart="12dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!-- Category Tabs -->
+    <HorizontalScrollView
+        android:id="@+id/tabsScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/header">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnTabAll"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="All"
+                android:textSize="12sp"
+                android:backgroundTint="@color/medicam_primary"
+                android:textColor="@color/white"
+                app:cornerRadius="18dp"
+                android:layout_marginEnd="8dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnTabCT"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="CT Scan"
+                android:textSize="12sp"
+                app:cornerRadius="18dp"
+                android:layout_marginEnd="8dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnTabMRI"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="MRI"
+                android:textSize="12sp"
+                app:cornerRadius="18dp"
+                android:layout_marginEnd="8dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnTabXRay"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="X-Ray"
+                android:textSize="12sp"
+                app:cornerRadius="18dp"
+                android:layout_marginEnd="8dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnTabUltrasound"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="Ultrasound"
+                android:textSize="12sp"
+                app:cornerRadius="18dp" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- Reports RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/reportsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/tabsScrollView"
+        app:layout_constraintBottom_toTopOf="@id/fabAddReport" />
+
     <!-- Empty State -->
     <LinearLayout
+        android:id="@+id/emptyStateLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
         android:gravity="center"
         android:padding="32dp"
-        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintTop_toBottomOf="@id/tabsScrollView"
         app:layout_constraintBottom_toTopOf="@id/bottomNavigation">
 
         <ImageView
@@ -114,18 +194,20 @@
         android:orientation="horizontal"
         android:background="@color/white"
         android:elevation="8dp"
-        android:paddingVertical="8dp"
+        android:paddingVertical="12dp"
+        android:paddingHorizontal="0dp"
+        android:minHeight="64dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <!-- Home -->
         <LinearLayout
             android:id="@+id/navHome"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
-            android:paddingVertical="6dp">
+            android:padding="4dp">
 
             <ImageView
                 android:layout_width="24dp"
@@ -134,23 +216,26 @@
                 app:tint="#BDBDBD" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Home"
                 android:textSize="11sp"
                 android:textColor="#BDBDBD"
-                android:layout_marginTop="4dp" />
+                android:layout_marginTop="3dp"
+                android:gravity="center"
+                android:maxLines="1"
+                android:ellipsize="end" />
         </LinearLayout>
 
         <!-- Reports -->
         <LinearLayout
             android:id="@+id/navPathology"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
-            android:paddingVertical="6dp">
+            android:padding="4dp">
 
             <ImageView
                 android:layout_width="24dp"
@@ -159,23 +244,26 @@
                 app:tint="#BDBDBD" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Reports"
                 android:textSize="11sp"
                 android:textColor="#BDBDBD"
-                android:layout_marginTop="4dp" />
+                android:layout_marginTop="3dp"
+                android:gravity="center"
+                android:maxLines="1"
+                android:ellipsize="end" />
         </LinearLayout>
 
         <!-- ABHA -->
         <LinearLayout
             android:id="@+id/navABHA"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
-            android:paddingVertical="6dp">
+            android:padding="4dp">
 
             <ImageView
                 android:layout_width="24dp"
@@ -184,23 +272,26 @@
                 app:tint="#BDBDBD" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="ABHA"
                 android:textSize="11sp"
                 android:textColor="#BDBDBD"
-                android:layout_marginTop="4dp" />
+                android:layout_marginTop="3dp"
+                android:gravity="center"
+                android:maxLines="1"
+                android:ellipsize="end" />
         </LinearLayout>
 
         <!-- BMI -->
         <LinearLayout
             android:id="@+id/navBMI"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
-            android:paddingVertical="6dp">
+            android:padding="4dp">
 
             <ImageView
                 android:layout_width="24dp"
@@ -209,23 +300,26 @@
                 app:tint="#BDBDBD" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="BMI"
                 android:textSize="11sp"
                 android:textColor="#BDBDBD"
-                android:layout_marginTop="4dp" />
+                android:layout_marginTop="3dp"
+                android:gravity="center"
+                android:maxLines="1"
+                android:ellipsize="end" />
         </LinearLayout>
 
         <!-- Devices -->
         <LinearLayout
             android:id="@+id/navDevices"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
-            android:paddingVertical="6dp">
+            android:padding="4dp">
 
             <ImageView
                 android:layout_width="24dp"
@@ -234,12 +328,15 @@
                 app:tint="#BDBDBD" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Devices"
                 android:textSize="11sp"
                 android:textColor="#BDBDBD"
-                android:layout_marginTop="4dp" />
+                android:layout_marginTop="3dp"
+                android:gravity="center"
+                android:maxLines="1"
+                android:ellipsize="end" />
         </LinearLayout>
 
     </LinearLayout>

@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class BMIInputActivity extends AppCompatActivity {
-    private TextInputEditText etHeightLeft, etHeightRight, etWeight, etAge;
+    private TextInputEditText etHeight, etWeight, etAge;
     private String gender;
 
     @Override
@@ -21,8 +21,7 @@ public class BMIInputActivity extends AppCompatActivity {
 
         gender = getIntent().getStringExtra("gender");
 
-        etHeightLeft = findViewById(R.id.etHeightLeft);
-        etHeightRight = findViewById(R.id.etHeightRight);
+        etHeight = findViewById(R.id.etHeight);
         etWeight = findViewById(R.id.etWeight);
         etAge = findViewById(R.id.etAge);
 
@@ -30,37 +29,59 @@ public class BMIInputActivity extends AppCompatActivity {
         View backBtn = findViewById(R.id.btnBack);
 
         calculateBtn.setOnClickListener(v -> calculateBMI());
-        backBtn.setOnClickListener(v -> finish());
+        backBtn.setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        });
         setupBottomNavigation();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
     private void calculateBMI() {
-        String heightLeftStr = etHeightLeft.getText().toString().trim();
-        String heightRightStr = etHeightRight.getText().toString().trim();
+        String heightStr = etHeight.getText().toString().trim();
         String weightStr = etWeight.getText().toString().trim();
         String ageStr = etAge.getText().toString().trim();
 
-        if (TextUtils.isEmpty(heightLeftStr) || TextUtils.isEmpty(heightRightStr) ||
-                TextUtils.isEmpty(weightStr) || TextUtils.isEmpty(ageStr)) {
+        if (TextUtils.isEmpty(heightStr) || TextUtils.isEmpty(weightStr) || TextUtils.isEmpty(ageStr)) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
         try {
-            int heightMeters = Integer.parseInt(heightLeftStr);
-            int heightCm = Integer.parseInt(heightRightStr);
-            int totalHeightCm = heightMeters * 100 + heightCm;
+            double heightCm = Double.parseDouble(heightStr);
             double weight = Double.parseDouble(weightStr);
             int age = Integer.parseInt(ageStr);
 
-            double heightM = totalHeightCm / 100.0;
+            // Validate reasonable ranges
+            if (heightCm < 50 || heightCm > 300) {
+                Toast.makeText(this, "Please enter height between 50-300 cm", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (weight < 10 || weight > 500) {
+                Toast.makeText(this, "Please enter weight between 10-500 kg", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (age < 1 || age > 120) {
+                Toast.makeText(this, "Please enter age between 1-120 years", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            double heightM = heightCm / 100.0;
             double bmi = weight / (heightM * heightM);
 
             Intent intent = new Intent(this, BMIResultActivity.class);
             intent.putExtra("bmi", bmi);
             intent.putExtra("gender", gender);
             intent.putExtra("age", age);
+            intent.putExtra("height", heightCm);
+            intent.putExtra("weight", weight);
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Please enter valid numbers", Toast.LENGTH_SHORT).show();
         }
@@ -75,19 +96,25 @@ public class BMIInputActivity extends AppCompatActivity {
 
         if (navHome != null) {
             navHome.setOnClickListener(v -> {
-                startActivity(new Intent(this, DashboardActivity.class));
+                Intent intent = new Intent(this, DashboardActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 finish();
             });
         }
         if (navPathology != null) {
             navPathology.setOnClickListener(v -> {
-                startActivity(new Intent(this, PathologyActivity.class));
+                Intent intent = new Intent(this, ReportsActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 finish();
             });
         }
         if (navABHA != null) {
             navABHA.setOnClickListener(v -> {
-                startActivity(new Intent(this, ABHAActivity.class));
+                Intent intent = new Intent(this, ABHAActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 finish();
             });
         }

@@ -26,9 +26,8 @@ public class BMIActivity extends AppCompatActivity {
             });
         }
 
-        // Launch BMI calculator flow
-        startActivity(new Intent(this, BMIGenderActivity.class));
-        finish();
+        // Setup Bottom Navigation
+        setupBottomNavigation();
     }
     
     private void setupBottomNavigation() {

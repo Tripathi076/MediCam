@@ -72,10 +72,14 @@ public class ReportsActivity extends AppCompatActivity {
 
         // Setup back button
         ImageView btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(v -> {
-            startActivity(new Intent(ReportsActivity.this, DashboardActivity.class));
-            finish();
-        });
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> {
+                Intent intent = new Intent(ReportsActivity.this, DashboardActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                finish();
+            });
+        }
 
         // Setup filter buttons
         setupFilterButtons();
@@ -85,16 +89,43 @@ public class ReportsActivity extends AppCompatActivity {
     }
 
     private void loadReports() {
-        SharedPreferences sharedPreferences = getSharedPreferences("medicam_pref", MODE_PRIVATE);
-        String reportsJson = sharedPreferences.getString("pathology_reports", "[]");
-
         Gson gson = new Gson();
-        Type type = new TypeToken<List<PathologyReport>>(){}.getType();
-        allReports = gson.fromJson(reportsJson, type);
-
-        // Load both pathology and radiology reports
-        if (allReports == null) {
-            allReports = new ArrayList<>();
+        
+        // Clear all reports
+        allReports.clear();
+        
+        // Load pathology reports from medicam_pref
+        SharedPreferences medicamPref = getSharedPreferences("medicam_pref", MODE_PRIVATE);
+        String pathologyJson = medicamPref.getString("pathology_reports", "[]");
+        Type pathologyType = new TypeToken<List<PathologyReport>>(){}.getType();
+        List<PathologyReport> pathologyReports = gson.fromJson(pathologyJson, pathologyType);
+        if (pathologyReports != null) {
+            // Set category for pathology reports
+            for (PathologyReport report : pathologyReports) {
+                if (report.getCategory() == null || report.getCategory().isEmpty()) {
+                    report.setCategory("Pathology");
+                }
+            }
+            allReports.addAll(pathologyReports);
+        }
+        
+        // Load radiology reports from RadiologyReports preferences
+        SharedPreferences radiologyPref = getSharedPreferences("RadiologyReports", MODE_PRIVATE);
+        String radiologyJson = radiologyPref.getString("reports_list", "[]");
+        Type radiologyType = new TypeToken<List<RadiologyReport>>(){}.getType();
+        List<RadiologyReport> radiologyReports = gson.fromJson(radiologyJson, radiologyType);
+        if (radiologyReports != null) {
+            for (RadiologyReport radReport : radiologyReports) {
+                PathologyReport converted = new PathologyReport();
+                converted.setLabName(radReport.getCenterName());
+                converted.setTestType(radReport.getScanType());
+                converted.setReportDate(radReport.getScanDate());
+                converted.setDoctorName(radReport.getDoctorName());
+                converted.setPatientName(radReport.getPatientName());
+                converted.setReportImageUri(radReport.getReportImageUri());
+                converted.setCategory("Radiology");
+                allReports.add(converted);
+            }
         }
 
         filterReports("All");
@@ -169,6 +200,12 @@ public class ReportsActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
     private void setupBottomNavigation() {
         View navHome = findViewById(R.id.navHome);
         View navPathology = findViewById(R.id.navPathology);
@@ -177,7 +214,9 @@ public class ReportsActivity extends AppCompatActivity {
         View navDevices = findViewById(R.id.navDevices);
 
         navHome.setOnClickListener(v -> {
-            startActivity(new Intent(ReportsActivity.this, DashboardActivity.class));
+            Intent intent = new Intent(ReportsActivity.this, DashboardActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             finish();
         });
 
@@ -187,12 +226,16 @@ public class ReportsActivity extends AppCompatActivity {
         });
 
         navABHA.setOnClickListener(v -> {
-            startActivity(new Intent(ReportsActivity.this, ABHAActivity.class));
+            Intent intent = new Intent(ReportsActivity.this, ABHAActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             finish();
         });
 
         navBMI.setOnClickListener(v -> {
-            startActivity(new Intent(ReportsActivity.this, BMIActivity.class));
+            Intent intent = new Intent(ReportsActivity.this, BMIGenderActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             finish();
         });
 

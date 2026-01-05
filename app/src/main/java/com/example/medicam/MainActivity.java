@@ -7,12 +7,9 @@ import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -22,9 +19,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.medicam.utils.SessionManager;
 import com.google.android.material.button.MaterialButton;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,19 +29,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        // Check if user is already logged in - redirect to Dashboard
+        SessionManager sessionManager = SessionManager.getInstance(this);
+        if (sessionManager.isUserLoggedIn()) {
+            Log.d(TAG, "User already logged in, redirecting to Dashboard");
+            Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+            return;
+        }
+        
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-
-        // Initialize Firebase
-        try {
-            FirebaseApp.initializeApp(this);
-            FirebaseAuth mAuth = FirebaseAuth.getInstance();
-            Log.d(TAG, "Firebase initialized successfully!");
-            Toast.makeText(this, "Firebase Connected! ✓", Toast.LENGTH_LONG).show();
-        } catch (Exception e) {
-            Log.e(TAG, "Firebase initialization failed: " + e.getMessage());
-            Toast.makeText(this, "Firebase Connection Failed - Check google-services.json", Toast.LENGTH_LONG).show();
-        }
 
         // Handle Window Insets for EdgeToEdge
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {

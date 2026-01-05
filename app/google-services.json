@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "665218489472",
+    "firebase_url": "https://medicam-58d09-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "medicam-58d09",
     "storage_bucket": "medicam-58d09.firebasestorage.app"
   },
@@ -12,7 +13,20 @@
           "package_name": "com.example.medicam"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "665218489472-flmop9se2kk1krppabg9hflksv40s4mf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.medicam",
+            "certificate_hash": "b199f63a6d5ce4c1ebb7bb76c9b2140b7341731a"
+          }
+        },
+        {
+          "client_id": "665218489472-1pn7nf3lq1kv0mo4lfacg3c190u1fm33.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAqHjx_ukl6Yl1reTvLjU_nEj6Ih0BrkYY"
@@ -20,7 +34,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "665218489472-1pn7nf3lq1kv0mo4lfacg3c190u1fm33.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

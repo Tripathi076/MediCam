@@ -65,6 +65,12 @@ public class ABHAActivity extends AppCompatActivity {
         }
     }
     
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
     private void setupBottomNavigation() {
         View navHome = findViewById(R.id.navHome);
         View navPathology = findViewById(R.id.navPathology);
@@ -98,7 +104,7 @@ public class ABHAActivity extends AppCompatActivity {
         // BMI
         if (navBMI != null) {
             navBMI.setOnClickListener(v -> {
-                startActivity(new Intent(ABHAActivity.this, BMIActivity.class));
+                startActivity(new Intent(ABHAActivity.this, BMIGenderActivity.class));
                 finish();
             });
         }

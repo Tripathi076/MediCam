@@ -2,17 +2,13 @@ package com.example.medicam;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,21 +36,20 @@ public class PathologyReportAdapter extends RecyclerView.Adapter<PathologyReport
     public void onBindViewHolder(@NonNull ReportViewHolder holder, int position) {
         PathologyReport report = filteredReports.get(position);
         
-        holder.tvLabName.setText(report.getLabName());
-        holder.tvTestName.setText(report.getTestName());
-        holder.tvDate.setText(report.getCollectionDate());
-        holder.tvDoctorName.setText(report.getDoctorName());
+        holder.tvLabName.setText(report.getLabName() != null ? report.getLabName() : "");
+        holder.tvTestName.setText(report.getTestName() != null ? report.getTestName() : "");
+        holder.tvDate.setText(report.getCollectionDate() != null ? report.getCollectionDate() : 
+                             (report.getReportDate() != null ? report.getReportDate() : ""));
+        holder.tvDoctorName.setText(report.getDoctorName() != null ? report.getDoctorName() : "");
         
-        // Load report image thumbnail
-        if (report.getReportImageUri() != null && !report.getReportImageUri().isEmpty()) {
-            try {
-                Uri imageUri = Uri.parse(report.getReportImageUri());
-                holder.ivReportThumbnail.setImageURI(imageUri);
-            } catch (Exception e) {
-                holder.ivReportThumbnail.setImageResource(R.drawable.ic_pathology_illustration);
+        // Set test type (category indicator)
+        if (holder.tvTestType != null) {
+            String category = report.getCategory();
+            if (category != null && category.equals("Radiology")) {
+                holder.tvTestType.setText(report.getTestType() != null ? report.getTestType() : "Radiology");
+            } else {
+                holder.tvTestType.setText("Pathology");
             }
-        } else {
-            holder.ivReportThumbnail.setImageResource(R.drawable.ic_pathology_illustration);
         }
         
         // Click listener to open report detail
@@ -62,10 +57,11 @@ public class PathologyReportAdapter extends RecyclerView.Adapter<PathologyReport
             Intent intent = new Intent(context, ReportDetailActivity.class);
             intent.putExtra("LAB_NAME", report.getLabName());
             intent.putExtra("TEST_NAME", report.getTestName());
-            intent.putExtra("COLLECTION_DATE", report.getCollectionDate());
+            intent.putExtra("COLLECTION_DATE", report.getCollectionDate() != null ? report.getCollectionDate() : report.getReportDate());
             intent.putExtra("DOCTOR_NAME", report.getDoctorName());
             intent.putExtra("PATIENT_NAME", report.getPatientName());
             intent.putExtra("REPORT_IMAGE_URI", report.getReportImageUri());
+            intent.putExtra("CATEGORY", report.getCategory());
             context.startActivity(intent);
         });
     }
@@ -90,14 +86,15 @@ public class PathologyReportAdapter extends RecyclerView.Adapter<PathologyReport
     }
 
     public static class ReportViewHolder extends RecyclerView.ViewHolder {
-        ImageView ivReportThumbnail;
-        TextView tvLabName, tvTestName, tvDate, tvDoctorName;
+        View iconContainer;
+        TextView tvLabName, tvTestName, tvDate, tvDoctorName, tvTestType;
 
         public ReportViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivReportThumbnail = itemView.findViewById(R.id.iconContainer);
+            iconContainer = itemView.findViewById(R.id.iconContainer);
             tvLabName = itemView.findViewById(R.id.tvLabName);
-            tvTestName = itemView.findViewById(R.id.tvTestType);
+            tvTestName = itemView.findViewById(R.id.tvTestName);
+            tvTestType = itemView.findViewById(R.id.tvTestType);
             tvDate = itemView.findViewById(R.id.tvDate);
             tvDoctorName = itemView.findViewById(R.id.tvDoctorName);
         }

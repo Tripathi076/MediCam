@@ -10,7 +10,7 @@
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/header_background"
+        android:background="@color/medicam_primary"
         android:padding="16dp"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -26,9 +26,10 @@
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <TextView
+            android:id="@+id/tvCenterName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="DRLOCY IMAGING CENTER"
+            android:text="Imaging Center"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -93,9 +94,10 @@
                     android:padding="16dp">
 
                     <TextView
+                        android:id="@+id/tvPatientName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Yakshi H. Patel"
+                        android:text="Patient Name"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary"
@@ -115,38 +117,17 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Age: 22"
-                                android:textSize="14sp"
-                                android:textColor="@color/text_secondary" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Sex: M"
-                                android:textSize="14sp"
-                                android:textColor="@color/text_secondary" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Registered ID"
+                                android:text="Scan Type"
                                 android:textSize="12sp"
                                 android:textColor="@color/text_secondary"
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/tvScanType"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="24PL04-RG-01-V1"
-                                android:textSize="12sp"
+                                android:text="CT Scan"
+                                android:textSize="14sp"
                                 android:textColor="@color/text_primary" />
 
                         </LinearLayout>
@@ -160,16 +141,41 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="UHID No."
+                                android:text="Scan Date"
                                 android:textSize="12sp"
                                 android:textColor="@color/text_secondary"
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/tvScanDate"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="6372 00 210 252"
+                                android:text="01-Jan-2025"
+                                android:textSize="14sp"
+                                android:textColor="@color/text_primary" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Doctor"
                                 android:textSize="12sp"
+                                android:textColor="@color/text_secondary"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvDoctorName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Dr. Name"
+                                android:textSize="14sp"
                                 android:textColor="@color/text_primary" />
 
                         </LinearLayout>
@@ -195,9 +201,10 @@
                     android:padding="16dp">
 
                     <TextView
+                        android:id="@+id/tvReportTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="CT HEAD PLAN"
+                        android:text="Scan Report"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/medicam_primary"
@@ -206,16 +213,17 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Report Details:"
+                        android:text="Report Notes:"
                         android:textSize="14sp"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary"
                         android:layout_marginBottom="8dp" />
 
                     <TextView
+                        android:id="@+id/tvReportNotes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="• Sample collected from CT images and sent to our clinic as per stated details present.\n• Analysis and testing done only the sample sent.\n• No further sensitivity to be added unless the client sends a note with the details."
+                        android:text="Radiology scan report uploaded by user."
                         android:textSize="14sp"
                         android:textColor="@color/text_secondary"
                         android:lineSpacingExtra="4dp" />
@@ -274,15 +282,16 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Radiology Technologist"
+                        android:text="Imaging Center"
                         android:textSize="12sp"
                         android:textColor="@color/text_secondary"
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tvCenterNameFooter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Dr. Anil Patel"
+                        android:text="Center Name"
                         android:textSize="14sp"
                         android:textColor="@color/text_primary" />
 
@@ -298,15 +307,16 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Scan Date"
+                        android:text="Category"
                         android:textSize="12sp"
                         android:textColor="@color/text_secondary"
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tvCategory"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="12-Jan-2025"
+                        android:text="CT Scan"
                         android:textSize="14sp"
                         android:textColor="@color/text_primary" />
 
